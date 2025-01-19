@@ -18,7 +18,8 @@ TELEGRAM_BOT_TOKEN=YOUR_TELEGRAM_BOT_TOKEN
 LASTFM_USERNAME=YOUR_LASTFM_USERNAME
 ```
 
-Instructions on how to obtain the API key and the bot token :
+Instructions on how to obtain the API key and the bot token : 
+
 [LASTFM](https://www.last.fm/api/account/create) <br>
 [TELEGRAM](https://core.telegram.org/bots#botfather)
 
