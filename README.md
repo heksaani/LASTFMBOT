@@ -4,8 +4,11 @@ This is a simple Telegram bot that uses the [Last.fm API](https://www.last.fm/ap
 
 # Current features
 /monthartist - prints out the top 10 artists you have listened to during the last 30 days and the number of scrobbles
+
 /monthtrack - prints out the top 10 tracks you have listened to during the last 30 days and the number of scrobbles 
+
 /weekartist - prints out the top 10 artists you have listened to during the last 7 days and the number of scrobbles
+
 /weektrack - prints out the top 10 tracks you have listened to during the last 7 days and the number of scrobbles 
 
 ## How to use
