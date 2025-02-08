@@ -26,19 +26,21 @@ class LastFMBot:
             logging.error("API keys or username not set in environment variables.")
             raise ValueError("API keys not set in environment variables.")
 
-        self.lastfm_client = LastFMClient(api_key, user)  # Use LastFMClient instance
-
-        self.application = Application.builder().token(telegram_token).build()
-        self.application.add_handler(CommandHandler("start", self.start))
+        self.lastfm_client = LastFMClient(api_key, user) # lastfm client instance
+        self.application = Application.builder().token(telegram_token).build() # telegram bot application
         self.application.add_handler(CommandHandler("help", self.help_command))
-
         self.application.add_handler(CommandHandler(
-            ["monthartists", "monthtracks", "weekartists", "weektracks"], 
+            ["monthartists", "monthtracks", "weekartists", "weektracks" ,"alltime"], 
             self.fetch_lastfm_command
         ))
-
-        #self.application.add_handler(MessageHandler(filters.COMMAND, self.unknown_command))
+        self.application.add_handler(CommandHandler("nowplaying", self.now_playing_command))
+        #to handle not / commands
         self.application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, self.handle_text_commands))
+
+    async def now_playing_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Fetch and reply with the currently playing track."""
+        data = await self.lastfm_client.fetch_now_playing()
+        await update.message.reply_text(data)
 
     async def fetch_lastfm_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Generic handler for fetching top tracks or artists."""
@@ -68,19 +70,17 @@ class LastFMBot:
         else:
             await update.message.reply_text("Failed to fetch data. Please try again later.")
 
-    async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        """Send a welcome message when /start is issued."""
-        await update.message.reply_text("Welcome! Use /help to see available commands.")
-
     async def help_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Send a help message when /help is issued."""
         await update.message.reply_text(
-            "This bot fetches top tracks and artists from Last.fm.\n\n"
+            "This bot fetches your data from Last.fm.\n\n"
             "Commands:\n"
             "/monthartists - Get top artists for the current month\n"
             "/monthtracks - Get top tracks for the current month\n"
             "/weekartists - Get top artists for the current week\n"
             "/weektracks - Get top tracks for the current week\n"
+            #"/fa - Get top tracks and artists of all time\n"
+            "/nowplaying - Get the track that is currently playing\n"
             "/help - Display this help message"
         )
 
@@ -94,16 +94,14 @@ class LastFMBot:
             "month tracks": lambda u, c: self.fetch_and_reply(u, "user.gettoptracks", "1month"),
             "week artists": lambda u, c: self.fetch_and_reply(u, "user.gettopartists", "7day"),
             "week tracks": lambda u, c: self.fetch_and_reply(u, "user.gettoptracks", "7day"),
+            #"alltime": lambda u, c: self.fetch_and_reply(u, "user.gettoptracks", "overall"),
+            "nowplaying": self.now_playing_command,
         }
 
         if text in command_map:
             await command_map[text](update, context)
         else:
             await update.message.reply_text("Unknown command. Try /help for available commands.")
-
-    async def unknown_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        """Handle unknown commands."""
-        await update.message.reply_text("Sorry, I didn't understand that command.")
 
     def run(self):
         """Start the bot."""

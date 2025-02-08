@@ -3,13 +3,16 @@
 This is a simple Telegram bot that uses the [Last.fm API](https://www.last.fm/api) to get information about the music you have listened to.
 
 # Current features
-/monthartist - prints out the top 10 artists you have listened to during the last 30 days and the number of scrobbles
 
-/monthtrack - prints out the top 10 tracks you have listened to during the last 30 days and the number of scrobbles 
+/monthartists - prints out the top 10 artists you have listened to during the last 30 days and the number of scrobbles
 
-/weekartist - prints out the top 10 artists you have listened to during the last 7 days and the number of scrobbles
+/monthtracks - prints out the top 10 tracks you have listened to during the last 30 days and the number of scrobbles
 
-/weektrack - prints out the top 10 tracks you have listened to during the last 7 days and the number of scrobbles 
+/weekartists - prints out the top 10 artists you have listened to during the last 7 days and the number of scrobbles
+
+/weektracks - prints out the top 10 tracks you have listened to during the last 7 days and the number of scrobbles
+
+/nowplaying - prints out the track you are currently listening to
 
 ## How to use
 
@@ -27,7 +30,7 @@ TELEGRAM_BOT_TOKEN=YOUR_TELEGRAM_BOT_TOKEN
 LASTFM_USERNAME=YOUR_LASTFM_USERNAME
 ```
 
-Instructions on how to obtain the API key and the bot token : 
+Instructions on how to obtain the API key and the bot token :
 
 [LASTFM](https://www.last.fm/api/account/create) <br>
 [TELEGRAM](https://core.telegram.org/bots#botfather)
